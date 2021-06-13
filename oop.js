@@ -18,6 +18,17 @@ class Person2 {
 // console.log(new Person("Charlie", 24));
 // console.log(new Person2("Charlie", 24));
 
+
+// You cannot use arrow functions as they are not valid constructors correctly
+
+const Person3 = (name, age) => {
+    this.name = name;
+    this.age = age;
+}
+
+// console.log(new Person3); // TypeError: Person3 is not a constructor
+
+
 // Methods are defined in the function's prototype
 
 Person.prototype.greet = function() {
@@ -44,5 +55,13 @@ class Student2 extends Person{
     }
 }
 
+// This will not work because Person() is not a part of this object, so it will reference a different 'this'
+function Student3(name, age, major) {
+    Person(this, name, age);
+
+    this.major = major;
+}
+
 // console.log(new Student("Kevin", 20, "CS"));
 // console.log(new Student2("Kevin", 20, "CS"));
+// console.log(new Student3("Kevin", 20, "CS"));

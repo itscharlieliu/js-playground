@@ -1,6 +1,6 @@
 // console.log(this); // Global this (or window, in browsers)
 
-console.log(globalThis);
+// console.log(globalThis);
 
 const myObj = {
     a: "Hello",
@@ -13,7 +13,7 @@ const myObj = {
         console.log(this);
     },
 
-    // Arrow functions do not have access to the 'this' keyword and will return global this
+    // Arrow functions do not have access to the 'this' keyword and will return (parent) global this
     myIncorrectFunction: () => {
         console.log(this);
     },
@@ -24,7 +24,15 @@ const myObj = {
             console.log(this);
         }
         test();
-    }
+    },
+
+    // However, arrow functions can access the parent this
+    myFunc3: function() {
+        const test = () => {
+            console.log(this); // 'this' will be myObj;
+        }
+        test();
+    },
 }
 
 // myObj.myFunc(); // myObj
@@ -32,4 +40,22 @@ const myObj = {
 
 // myObj.myIncorrectFunction(); // Global this
 // myObj.myIncorrectFunction2(); // Global this
+// myObj.myFunc3(); // myObj
 
+
+// Using call()
+// allows us to call functions using a specified context
+
+function test(arg1, arg2) {
+    console.log(this, arg1, arg2);
+}
+
+// test("hello", "world") // Global context
+// test.call(myObj, "hello", "world"); // myObj context
+
+// Use apply() to call functions using specified context and args as an array
+// test.apply(myObj, ["hello", "world"]); // myObj context
+
+// Use bind() to create a new function with a specified context
+const boundTest = test.bind(myObj);
+// boundTest("hello", "world") // myObj context
